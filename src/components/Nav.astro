@@ -1,0 +1,220 @@
+---
+const navLinks = [
+  { label: 'About',      href: '#about'      },
+  { label: 'Skills',     href: '#skills'     },
+  { label: 'Projects',   href: '#projects'   },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Contact',    href: '#contact'    },
+];
+---
+
+<header class="nav" id="site-nav" aria-label="Site navigation">
+  <div class="nav__inner container">
+    <!-- Logo / brand -->
+    <a href="#hero" class="nav__logo" aria-label="Back to top">
+      <span class="nav__logo-text">LM</span>
+    </a>
+
+    <!-- Desktop links -->
+    <nav class="nav__links" aria-label="Main navigation">
+      {navLinks.map((link) => (
+        <a href={link.href} class="nav__link">{link.label}</a>
+      ))}
+    </nav>
+
+    <!-- Hamburger (mobile) -->
+    <button
+      class="nav__hamburger"
+      id="hamburger-btn"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="nav__hamburger-bar"></span>
+      <span class="nav__hamburger-bar"></span>
+      <span class="nav__hamburger-bar"></span>
+    </button>
+  </div>
+
+  <!-- Mobile slide-in menu -->
+  <div class="nav__mobile" id="mobile-menu" aria-hidden="true">
+    <nav aria-label="Mobile navigation">
+      {navLinks.map((link) => (
+        <a href={link.href} class="nav__mobile-link">{link.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    background: transparent;
+    transition: background var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .nav.scrolled {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 1px 0 var(--color-border);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  /* Logo */
+  .nav__logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .nav__logo-text {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+  }
+
+  /* Desktop links */
+  .nav__links {
+    display: flex;
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  .nav__link {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #F1F5F9;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav.scrolled .nav__link {
+    color: var(--color-text);
+  }
+
+  .nav__link:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* Hamburger */
+  .nav__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: var(--space-2);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .nav__hamburger-bar {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #F1F5F9;
+    border-radius: 2px;
+    transition: transform var(--transition-base), opacity var(--transition-base);
+  }
+
+  .nav.scrolled .nav__hamburger-bar {
+    background: var(--color-text);
+  }
+
+  .nav__hamburger[aria-expanded="true"] .nav__hamburger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav__hamburger[aria-expanded="true"] .nav__hamburger-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .nav__hamburger[aria-expanded="true"] .nav__hamburger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile menu */
+  .nav__mobile {
+    display: none;
+    flex-direction: column;
+    background: var(--color-dark);
+    padding: var(--space-6);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .nav__mobile.open {
+    display: flex;
+  }
+
+  .nav__mobile-link {
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    color: #F1F5F9;
+    text-decoration: none;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: color var(--transition-fast);
+  }
+
+  .nav__mobile-link:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 768px) {
+    .nav__links {
+      display: none;
+    }
+
+    .nav__hamburger {
+      display: flex;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var nav        = document.getElementById('site-nav');
+    var btn        = document.getElementById('hamburger-btn');
+    var mobileMenu = document.getElementById('mobile-menu');
+
+    // Sticky glass effect
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 20) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Hamburger toggle
+    btn.addEventListener('click', function () {
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      mobileMenu.setAttribute('aria-hidden', String(expanded));
+      mobileMenu.classList.toggle('open', !expanded);
+    });
+
+    // Close mobile menu when a link is clicked
+    mobileMenu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        btn.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        mobileMenu.classList.remove('open');
+      });
+    });
+  })();
+</script>

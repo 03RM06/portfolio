@@ -1,0 +1,39 @@
+---
+import TimelineItem from './TimelineItem.astro';
+import { experience } from '../data/experience';
+---
+
+<section class="section experience" id="experience" aria-label="Experience and Education">
+  <div class="container">
+    <div class="fade-in">
+      <h2 class="section-heading">Experience</h2>
+      <p class="experience__intro">
+        Seven years of operations leadership before the pivot to software. Both paths matter.
+      </p>
+    </div>
+
+    <ul class="experience__timeline fade-in" role="list" aria-label="Career timeline">
+      {experience.map((entry, index) => (
+        <TimelineItem
+          entry={entry}
+          isLast={index === experience.length - 1}
+        />
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .experience__intro {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-8);
+    max-width: 520px;
+  }
+
+  .experience__timeline {
+    padding-left: 0;
+    list-style: none;
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+import SkillGroup from './SkillGroup.astro';
+
+const skillGroups = [
+  {
+    heading: 'Languages',
+    skills: ['Java', 'JavaScript', 'HTML / CSS', 'SQL', 'Python'],
+  },
+  {
+    heading: 'Tools & Platforms',
+    skills: ['Apache NetBeans', 'MySQL', 'Excel / VBA', 'Git', 'GitHub', 'Google Apps Script'],
+  },
+  {
+    heading: 'Concepts',
+    skills: ['OOP', 'RBAC', 'SDLC', 'Agile Basics', 'Database Design'],
+  },
+  {
+    heading: 'Soft & Leadership',
+    skills: ['Team Leadership', 'L&D Facilitation', 'Process Documentation', 'Training Design'],
+  },
+];
+---
+
+<section class="section skills" id="skills" aria-label="Skills">
+  <div class="container">
+    <div class="fade-in">
+      <h2 class="section-heading">Skills</h2>
+      <p class="skills__intro">
+        A mix of technical tools and the leadership experience that informs how I use them.
+      </p>
+    </div>
+
+    <div class="skills__grid fade-in">
+      {skillGroups.map((group) => (
+        <SkillGroup heading={group.heading} skills={group.skills} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills__intro {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-8);
+    max-width: 520px;
+  }
+
+  .skills__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-6);
+  }
+</style>

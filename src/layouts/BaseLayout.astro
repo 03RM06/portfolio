@@ -1,0 +1,110 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  pageTitle?: string;
+  description?: string;
+}
+
+const {
+  pageTitle = 'Home',
+  description = 'Lorenz R. Maray — BSIT Software Development student and former BPO operations leader pivoting into software engineering. Java, MySQL, web development.',
+} = Astro.props;
+
+const siteUrl = 'https://lorenzmaray.netlify.app';
+const fullTitle = `${pageTitle} | Lorenz R. Maray — Software Developer`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primary Meta -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={siteUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content={siteUrl} />
+    <meta property="og:title"       content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image"       content={`${siteUrl}/og-image.png`} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image"       content={`${siteUrl}/og-image.png`} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts: preconnect then load -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500&family=Fira+Code:wght@400&display=swap"
+    />
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <slot />
+
+    <!-- Intersection Observer scroll-fade (respects prefers-reduced-motion) -->
+    <script is:inline>
+      (function () {
+        var prefersReduced =
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (prefersReduced) {
+          document.querySelectorAll('.fade-in').forEach(function (el) {
+            el.classList.add('visible');
+          });
+          return;
+        }
+
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+
+        document.querySelectorAll('.fade-in').forEach(function (el) {
+          observer.observe(el);
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    background: var(--color-accent);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 0 0 8px 8px;
+    font-weight: 600;
+    z-index: 200;
+    transition: top 0.15s ease;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+</style>

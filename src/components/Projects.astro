@@ -1,0 +1,43 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import { projects } from '../data/projects';
+---
+
+<section class="section projects" id="projects" aria-label="Projects">
+  <div class="container">
+    <div class="fade-in">
+      <h2 class="section-heading">Projects</h2>
+      <p class="projects__intro">
+        A selection of work spanning desktop software, data dashboards, and web development.
+      </p>
+    </div>
+
+    <div class="projects__grid fade-in">
+      {projects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects__intro {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-8);
+    max-width: 520px;
+  }
+
+  .projects__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-6);
+  }
+
+  @media (max-width: 768px) {
+    .projects__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
